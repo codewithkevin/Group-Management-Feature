@@ -1,10 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ISusuGroups } from "@/types/susuGroups.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 
 interface PublicSuSuCardProps {
-  data: any;
+  data: ISusuGroups;
 }
 export default function PublicSuSuCard(data: PublicSuSuCardProps) {
   return (
@@ -16,7 +17,7 @@ export default function PublicSuSuCard(data: PublicSuSuCardProps) {
 
         <View>
           <ThemedText type="defaultSemiBold">
-            20gh daily for 1k cashout
+            {data?.data.description}
           </ThemedText>
           <ThemedText type="default">12 members left</ThemedText>
           <View className="flex-row items-center mt-1">

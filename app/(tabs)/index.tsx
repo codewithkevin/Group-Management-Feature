@@ -164,7 +164,7 @@ export default function HomeScreen() {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const headerOpacity = useRef(new Animated.Value(0)).current;
-  const { userSusuGroups, publicSusuGroups } = useSuSuData();
+  const { userSusuGroups, publicSusuGroups, user } = useSuSuData();
 
   const sectionsData: Section[] = [
     {
@@ -281,7 +281,7 @@ export default function HomeScreen() {
           <View className="flex-row gap-2">
             <Image
               source={{
-                uri: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVyc29ufGVufDB8fDB8fHww",
+                uri: user?.profilePicture,
               }}
               style={{
                 width: 50,
@@ -295,7 +295,7 @@ export default function HomeScreen() {
             />
             <View>
               <ThemedText type="defaultSemiBold">Hi</ThemedText>
-              <ThemedText type="defaultSemiBold">Humble</ThemedText>
+              <ThemedText type="defaultSemiBold">{user?.name}</ThemedText>
             </View>
           </View>
 
