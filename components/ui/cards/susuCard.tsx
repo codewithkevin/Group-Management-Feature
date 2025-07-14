@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ISusuGroups } from "@/types/susuGroups.types";
+import { getCardColorsByID } from "@/utils/cardColors";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -9,13 +10,17 @@ interface SusuCardProps {
 }
 
 export default function SusuCard({ data }: SusuCardProps) {
+  const cardColors = getCardColorsByID(data.id);
+
   return (
     <TouchableOpacity
       style={{
         height: 220,
         width: 230,
+        borderColor: cardColors.borderColor,
+        backgroundColor: cardColors.backgroundColor,
       }}
-      className="border border-[#31a683] rounded-xl bg-[#E6F7F2] p-4 gap-4 overflow-hidden"
+      className="border  rounded-xl  p-4 gap-4 overflow-hidden"
     >
       <MaterialIcons
         name="keyboard-arrow-left"
