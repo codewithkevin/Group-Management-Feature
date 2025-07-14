@@ -2,6 +2,7 @@ import { BodyFlatList } from "@/components/BodyFlatList";
 import { ThemedText } from "@/components/ThemedText";
 import Button from "@/components/ui/button";
 import SusuCard from "@/components/ui/cards/susuCard";
+import { useSuSuData } from "@/hooks/useSusuData";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
@@ -163,6 +164,7 @@ export default function HomeScreen() {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const headerOpacity = useRef(new Animated.Value(0)).current;
+  const { userSusuGroups, publicSusuGroups } = useSuSuData();
 
   const sectionsData: Section[] = [
     {
@@ -170,22 +172,16 @@ export default function HomeScreen() {
       type: "banner",
     },
     {
-      id: "categories",
+      id: "personal",
       type: "horizontal",
-      title: "Categories",
-      data: [...Array(10)].map((_, i) => ({
-        id: `cat-${i}`,
-        name: `Category ${i}`,
-      })),
+      title: "My Susu Groups",
+      data: userSusuGroups,
     },
     {
-      id: "featured",
+      id: "public",
       type: "vertical",
-      title: "Featured",
-      data: [...Array(10)].map((_, i) => ({
-        id: `feat-${i}`,
-        name: `Featured ${i}`,
-      })),
+      title: "Public Susu Groups",
+      data: publicSusuGroups,
     },
   ];
 

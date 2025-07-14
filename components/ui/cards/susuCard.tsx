@@ -1,10 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ISusuGroups } from "@/types/susuGroups.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface SusuCardProps {
-  data: any;
+  data: ISusuGroups;
 }
 
 export default function SusuCard({ data }: SusuCardProps) {
@@ -38,7 +39,7 @@ export default function SusuCard({ data }: SusuCardProps) {
       </View>
 
       <View className="w-52 z-10">
-        <ThemedText type="subtitle">20gh daily for 1k cashout</ThemedText>
+        <ThemedText type="subtitle">{data?.description}</ThemedText>
       </View>
 
       <View className="flex-row items-center justify-between z-10">
