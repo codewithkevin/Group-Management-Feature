@@ -1,24 +1,25 @@
 import { ThemedText } from "@/components/ThemedText";
-import { ISusuGroups } from "@/types/susuGroups.types";
-import { getCardColorsByID } from "@/utils/cardColors";
+import { ISusuGroups, SuSuTypeEnum } from "@/types/susuGroups.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 interface SusuCardProps {
   data: ISusuGroups;
+  width?: number;
 }
 
-export default function SusuCard({ data }: SusuCardProps) {
-  const cardColors = getCardColorsByID(data.id);
+export default function SusuCard({ data, width }: SusuCardProps) {
+  const isPrivateSuSu = data.susuType === SuSuTypeEnum.Private;
 
   return (
     <TouchableOpacity
       style={{
-        height: 220,
-        width: 230,
-        borderColor: cardColors.borderColor,
-        backgroundColor: cardColors.backgroundColor,
+        height: wp(50),
+        width: width ? width : wp(55),
+        borderColor: isPrivateSuSu ? "#31a683" : "#C5BEE2",
+        backgroundColor: isPrivateSuSu ? "#E6F7F2" : "#F3F0F9",
       }}
       className="border  rounded-xl  p-4 gap-4 overflow-hidden"
     >
@@ -73,7 +74,7 @@ export default function SusuCard({ data }: SusuCardProps) {
         </View>
 
         <View className="bg-white p-2 rounded-xl">
-          <Text className="font-medium text-md">Private</Text>
+          <Text className="font-medium text-md">{data?.susuType}</Text>
         </View>
       </View>
     </TouchableOpacity>

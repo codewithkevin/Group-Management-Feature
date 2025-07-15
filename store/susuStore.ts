@@ -1,6 +1,6 @@
 import { mockSusuGroups } from '@/__mockData/susuGroups.mock';
 import { mockUser } from '@/__mockData/user.mock';
-import { ISusuGroups } from '@/types/susuGroups.types';
+import { ISusuGroups, SuSuTypeEnum } from '@/types/susuGroups.types';
 import { IUser } from '@/types/user.types';
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
@@ -15,6 +15,7 @@ interface SuSuStore {
     initializeData: () => void;
     joinSusuGroup: (groupId: number, userId: number) => void;
     leaveSusuGroup: (groupId: number, userId: number) => void;
+    updateGroupType: (groupId: number, newType: SuSuTypeEnum) => void;
 }
 
 export const useSusuStore = create<SuSuStore>()(
@@ -30,11 +31,12 @@ export const useSusuStore = create<SuSuStore>()(
 
             if (!isInitialized && user) {
                 const userGroups = allSusuGroups.filter(group =>
-                    group.members.includes(user.id.toString())
+                    group.members.some(member => member.id === user.id)
                 );
 
                 const publicGroups = allSusuGroups.filter(group =>
-                    !group.members.includes(user.id.toString())
+                    group.susuType === SuSuTypeEnum.Public &&
+                    !group.members.some(member => member.id === user.id)
                 );
 
                 set({
@@ -46,12 +48,21 @@ export const useSusuStore = create<SuSuStore>()(
         },
 
         joinSusuGroup: (groupId: number, userId: number) => {
-            const { allSusuGroups } = get();
+            const { allSusuGroups, user } = get();
+
+            if (!user || user.id !== userId) return;
+
             const updatedGroups = allSusuGroups.map(group => {
-                if (group.id === groupId && !group.members.includes(userId.toString())) {
+                if (group.id === groupId && !group.members.some(member => member.id === userId)) {
+                    const newMember = {
+                        id: user.id,
+                        name: user.name,
+                        profilePicture: user.profilePicture
+                    };
+
                     return {
                         ...group,
-                        members: [...group.members, userId.toString()],
+                        members: [...group.members, newMember],
                         updated_at: new Date().toISOString()
                     };
                 }
@@ -63,11 +74,29 @@ export const useSusuStore = create<SuSuStore>()(
 
         leaveSusuGroup: (groupId: number, userId: number) => {
             const { allSusuGroups } = get();
+
             const updatedGroups = allSusuGroups.map(group => {
                 if (group.id === groupId) {
                     return {
                         ...group,
-                        members: group.members.filter(id => id !== userId.toString()),
+                        members: group.members.filter(member => member.id !== userId),
+                        updated_at: new Date().toISOString()
+                    };
+                }
+                return group;
+            });
+
+            set({ allSusuGroups: updatedGroups });
+        },
+
+        updateGroupType: (groupId: number, newType: SuSuTypeEnum) => {
+            const { allSusuGroups } = get();
+
+            const updatedGroups = allSusuGroups.map(group => {
+                if (group.id === groupId) {
+                    return {
+                        ...group,
+                        susuType: newType,
                         updated_at: new Date().toISOString()
                     };
                 }
@@ -79,18 +108,18 @@ export const useSusuStore = create<SuSuStore>()(
     }))
 );
 
-// Auto-update observer
 useSusuStore.subscribe(
     (state) => state.allSusuGroups,
     (allSusuGroups) => {
         const { user } = useSusuStore.getState();
         if (user) {
             const userGroups = allSusuGroups.filter(group =>
-                group.members.includes(user.id.toString())
+                group.members.some(member => member.id === user.id)
             );
 
             const publicGroups = allSusuGroups.filter(group =>
-                !group.members.includes(user.id.toString())
+                group.susuType === SuSuTypeEnum.Public &&
+                !group.members.some(member => member.id === user.id)
             );
 
             useSusuStore.setState({
@@ -100,3 +129,21 @@ useSusuStore.subscribe(
         }
     }
 );
+
+export const useSuSuData = () => {
+    const store = useSusuStore();
+
+    if (!store.isInitialized) {
+        store.initializeData();
+    }
+
+    return {
+        user: store.user,
+        userSusuGroups: store.userSusuGroups,
+        publicSusuGroups: store.publicSusuGroups,
+        allSusuGroups: store.allSusuGroups,
+        joinSusuGroup: store.joinSusuGroup,
+        leaveSusuGroup: store.leaveSusuGroup,
+        updateGroupType: store.updateGroupType,
+    };
+};

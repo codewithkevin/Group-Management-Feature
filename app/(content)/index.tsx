@@ -1,7 +1,8 @@
 import { SegmentedControl } from "@/components/SegmentedControl";
 import { ThemedText } from "@/components/ThemedText";
 import Button from "@/components/ui/button";
-import PublicSuSuCard from "@/components/ui/cards/publicSusuCard";
+import SusuCard from "@/components/ui/cards/susuCard";
+import { useIntroAnimation } from "@/hooks/animations/useIntroAnimation";
 import { useSuSuData } from "@/hooks/useSusuData";
 import { ISusuGroups } from "@/types/susuGroups.types";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -23,6 +24,13 @@ export default function SuSuGroupList() {
   const insets = useSafeAreaInsets();
   const [selectedSegment, setSelectedSegment] = useState(0);
   const { userSusuGroups, publicSusuGroups } = useSuSuData();
+
+  const { headerStyle, segmentStyle, listStyle, itemStyle } = useIntroAnimation(
+    {
+      duration: 500,
+      delay: 100,
+    }
+  );
 
   const scrollY = useSharedValue(0);
   const STICKY_POINT = wp(23);
@@ -96,23 +104,26 @@ export default function SuSuGroupList() {
   }, [selectedSegment, userSusuGroups, publicSusuGroups]);
 
   const renderGroupItem = useCallback(
-    ({ item }: { item: ISusuGroups }) => <PublicSuSuCard data={item} />,
-    []
+    ({ item }: { item: ISusuGroups }) => (
+      <Animated.View style={itemStyle}>
+        <SusuCard data={item} width={wp(92)} />
+      </Animated.View>
+    ),
+    [itemStyle]
   );
 
   const ListHeaderComponent = () => <View style={{ height: wp(20) }} />;
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Fixed Header with Blur */}
       <Animated.View style={[styles.fixedHeader, stickyHeaderStyle]}>
-        {/* Blur Background */}
         <Animated.View style={[styles.blurContainer, blurIntensity]}>
           <BlurView intensity={80} tint="light" style={styles.blur} />
         </Animated.View>
 
-        {/* Header Content - Fades out when sticky */}
-        <Animated.View style={[styles.headerContent, headerContentStyle]}>
+        <Animated.View
+          style={[styles.headerContent, headerContentStyle, headerStyle]}
+        >
           <Button onPress={() => router.back()} variant="ghost">
             <MaterialIcons name="arrow-back" size={24} color="black" />
           </Button>
@@ -123,8 +134,7 @@ export default function SuSuGroupList() {
           </ThemedText>
         </Animated.View>
 
-        {/* Segment Control - Always visible */}
-        <View style={styles.segmentContainer}>
+        <Animated.View style={[styles.segmentContainer, segmentStyle]}>
           <SegmentedControl
             segments={["All groups", "Private", "Public"]}
             selectedIndex={selectedSegment}
@@ -132,10 +142,9 @@ export default function SuSuGroupList() {
             style={styles.segmentedControl}
             animationConfig={{ damping: 20, stiffness: 200, mass: 0.8 }}
           />
-        </View>
+        </Animated.View>
       </Animated.View>
 
-      {/* Scrollable List */}
       <Animated.FlatList
         data={currentData}
         renderItem={renderGroupItem}
@@ -146,6 +155,7 @@ export default function SuSuGroupList() {
         contentContainerStyle={styles.listContainer}
         ListHeaderComponent={ListHeaderComponent}
         ItemSeparatorComponent={() => <View style={{ height: wp(3) }} />}
+        style={listStyle}
       />
     </View>
   );
@@ -194,8 +204,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#ECEDEE",
   },
   listContainer: {
-    paddingHorizontal: wp(3),
     paddingTop: wp(25),
     paddingBottom: wp(20),
+    alignItems: "center",
   },
 });

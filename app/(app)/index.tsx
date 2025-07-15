@@ -10,7 +10,6 @@ import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   Animated,
-  Dimensions,
   FlatList,
   Image,
   StyleSheet,
@@ -18,10 +17,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PublicSuSuCard from "../../components/ui/cards/publicSusuCard";
-
-const { width } = Dimensions.get("window");
 
 interface Section {
   id: string;
@@ -322,19 +320,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bannerContainer: {
-    width: width - 32,
-    height: 60,
-    borderRadius: 16,
-    marginHorizontal: 16,
-    marginVertical: 20,
+    width: wp(95),
+    height: wp(15),
+    borderRadius: wp(5),
+    marginHorizontal: wp(2),
+    marginVertical: wp(5),
   },
   content: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingHorizontal: wp(5),
+    paddingVertical: wp(5),
   },
   stickyHeader: {
     position: "absolute",
@@ -352,13 +350,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingBottom: 10,
+    paddingHorizontal: wp(3),
+    paddingBottom: wp(5),
   },
   notificationContainer: {
     backgroundColor: "rgba(255,255,255,0.2)",
     padding: 8,
-    borderRadius: 12,
+    borderRadius: wp(5),
     backdropFilter: "blur(10px)",
   },
   dotsContainer: {
