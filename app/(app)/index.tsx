@@ -245,7 +245,7 @@ export default function HomeScreen() {
         windowSize={3}
         initialNumToRender={2}
         contentContainerStyle={{
-          paddingVertical: 16,
+          paddingVertical: wp(5),
           paddingTop: insets.top,
         }}
         showsVerticalScrollIndicator={false}
@@ -283,8 +283,8 @@ export default function HomeScreen() {
                 uri: user?.profilePicture,
               }}
               style={{
-                width: 50,
-                height: 50,
+                width: wp(12),
+                height: wp(12),
                 borderRadius: 99,
                 borderWidth: 2,
                 borderColor: isScrolling
