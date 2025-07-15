@@ -26,7 +26,6 @@ describe("PublicSuSuCard", () => {
       <PublicSuSuCard data={mockPublicSusuGroup} />
     );
 
-    // Should render 5 avatar images
     const images = getAllByRole("image");
     expect(images).toHaveLength(5);
   });
