@@ -106,7 +106,7 @@ export default function SuSuGroupList() {
   const renderGroupItem = useCallback(
     ({ item }: { item: ISusuGroups }) => (
       <Animated.View style={itemStyle}>
-        <SusuCard data={item} width={wp(92)} />
+        <SusuCard data={item} width={wp(92)} height={wp(40)} />
       </Animated.View>
     ),
     [itemStyle]

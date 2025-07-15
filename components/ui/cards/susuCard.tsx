@@ -8,15 +8,16 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 interface SusuCardProps {
   data: ISusuGroups;
   width?: number;
+  height?: number;
 }
 
-export default function SusuCard({ data, width }: SusuCardProps) {
+export default function SusuCard({ data, width, height }: SusuCardProps) {
   const isPrivateSuSu = data.susuType === SuSuTypeEnum.Private;
 
   return (
     <TouchableOpacity
       style={{
-        height: wp(50),
+        height: height ? height : wp(50),
         width: width ? width : wp(55),
         borderColor: isPrivateSuSu ? "#31a683" : "#C5BEE2",
         backgroundColor: isPrivateSuSu ? "#E6F7F2" : "#F3F0F9",
@@ -44,8 +45,15 @@ export default function SusuCard({ data, width }: SusuCardProps) {
         <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
       </View>
 
-      <View className="w-52 z-10">
-        <ThemedText type="subtitle">{data?.description}</ThemedText>
+      <View
+        style={{
+          maxWidth: height ? wp(60) : wp(40),
+        }}
+        className="z-10"
+      >
+        <ThemedText type={height ? "defaultSemiBold" : "subtitle"}>
+          {data?.description}
+        </ThemedText>
       </View>
 
       <View className="flex-row items-center justify-between z-10">
