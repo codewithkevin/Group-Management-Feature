@@ -32,8 +32,22 @@ export default function SusuCard({ data, width, height }: SusuCardProps) {
           position: "absolute",
           bottom: -25,
           right: -52,
-          opacity: 0.09,
+          opacity: 0.6,
           rotation: 5,
+          zIndex: 0,
+        }}
+      />
+
+      <MaterialIcons
+        name="keyboard-arrow-left"
+        size={120}
+        color="#31a683"
+        style={{
+          position: "absolute",
+          bottom: -35,
+          right: -38,
+          opacity: 0.6,
+          transform: [{ rotate: "6deg" }],
           zIndex: 0,
         }}
       />
