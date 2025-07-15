@@ -6,6 +6,7 @@ import { useSuSuData } from "@/hooks/useSusuData";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   Animated,
@@ -100,7 +101,7 @@ const PersonalSuSuGroupSection = ({ section }: { section: Section }) => {
           My Susu Groups
         </ThemedText>
 
-        <Button variant="ghost">
+        <Button onPress={() => router.navigate("/(content)")} variant="ghost">
           <ThemedText type="link">View All</ThemedText>
         </Button>
       </View>
@@ -138,7 +139,7 @@ const PublicSuSuGroupSection = ({ section }: { section: Section }) => {
           Public Susu Groups
         </ThemedText>
 
-        <Button variant="ghost">
+        <Button onPress={() => router.navigate("/(content)")} variant="ghost">
           <ThemedText type="link">View All</ThemedText>
         </Button>
       </View>

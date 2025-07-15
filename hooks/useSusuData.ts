@@ -8,10 +8,6 @@ export const useSuSuData = () => {
         publicSusuGroups,
         allSusuGroups,
         initializeData,
-        forceReloadData,
-        clearStorage,
-        getUserSusuGroups,
-        getPublicSusuGroups,
         joinSusuGroup,
         leaveSusuGroup,
     } = useSusuStore();
@@ -20,15 +16,6 @@ export const useSuSuData = () => {
         initializeData();
     }, []);
 
-    const refreshUserGroups = () => {
-        if (user) {
-            getUserSusuGroups(user.id);
-        }
-    };
-
-    const refreshPublicGroups = () => {
-        getPublicSusuGroups();
-    };
 
     const handleJoinGroup = (groupId: number) => {
         if (user) {
@@ -42,26 +29,14 @@ export const useSuSuData = () => {
         }
     };
 
-    // Force reload with new mock data
-    const forceReload = () => {
-        forceReloadData();
-    };
 
-    // Clear storage and reload
-    const resetData = async () => {
-        await clearStorage();
-    };
 
     return {
         user,
         userSusuGroups,
         publicSusuGroups,
         allSusuGroups,
-        refreshUserGroups,
-        refreshPublicGroups,
         handleJoinGroup,
         handleLeaveGroup,
-        forceReload,
-        resetData,
     };
 };
