@@ -7,6 +7,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -21,6 +22,7 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
+            paddingTop: 10,
           },
           default: {},
         }),
@@ -31,7 +33,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={24} name="house.fill" color={color} />
           ),
         }}
       />
@@ -41,7 +43,7 @@ export default function TabLayout() {
         options={{
           title: "Groups",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <FontAwesome name="group" size={24} color={color} />
           ),
         }}
       />
@@ -59,11 +61,7 @@ export default function TabLayout() {
                 justifyContent: "center",
               }}
             >
-              <IconSymbol
-                size={28}
-                name="plus.circle.fill"
-                color={props.accessibilityState?.selected ? "blue" : "gray"}
-              />
+              <Ionicons name="brush" size={24} color="black" />
             </TouchableOpacity>
           ),
         }}
@@ -74,7 +72,7 @@ export default function TabLayout() {
         options={{
           title: "Transactions",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <AntDesign name="file1" size={24} color={color} />
           ),
         }}
       />
@@ -83,7 +81,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <AntDesign name="user" size={24} color={color} />
           ),
         }}
       />
